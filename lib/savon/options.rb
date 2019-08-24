@@ -76,6 +76,7 @@ module Savon
         :encoding                    => "UTF-8",
         :soap_version                => 1,
         :namespaces                  => {},
+        :request_logger              => nil,
         :logger                      => Logger.new($stdout),
         :log                         => false,
         :filters                     => [],

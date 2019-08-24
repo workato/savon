@@ -38,8 +38,7 @@ module Savon
       @name = name
       @wsdl = wsdl
       @globals = globals
-
-      @logger = RequestLogger.new(globals)
+      @request_logger = @globals[:request_logger] || RequestLogger.new(globals)
     end
 
     def build(locals = {}, &block)
@@ -91,7 +90,7 @@ module Savon
     end
 
     def call_with_logging(request)
-      @logger.log(request) { HTTPI.post(request, @globals[:adapter]) }
+      @request_logger.log(request) { HTTPI.post(request, @globals[:adapter]) }
     end
 
     def build_request(builder)

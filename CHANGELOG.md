@@ -1,3 +1,6 @@
+# 2.13.0 https://github.com/workato/savon (2019-08-24)
+* Add :request_logger globals parameter to override raw request logger. If specified text logger is not invoked.
+
 # 2.12.0 (2018-01-16)
 
 * Drop support for ruby 2.1 and below.
