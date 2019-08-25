@@ -38,7 +38,7 @@ module Savon
       @name = name
       @wsdl = wsdl
       @globals = globals
-      @request_logger = @globals[:request_logger] || RequestLogger.new(globals)
+      @request_loggers = [@globals[:request_logger], RequestLogger.new(globals)]
     end
 
     def build(locals = {}, &block)
@@ -90,7 +90,13 @@ module Savon
     end
 
     def call_with_logging(request)
-      @request_logger.log(request) { HTTPI.post(request, @globals[:adapter]) }
+      @request_loggers.each { |request_logger| request_logger.log_request(request) }
+      response = nil
+      elapsed = ::Benchmartk.realtime do
+        response = HTTPI.post(request, @globals[:adapter])
+      end
+      @request_loggers.each { |request_logger| request_logger.log_response(response, request, elapsed) }
+      response
     end
 
     def build_request(builder)

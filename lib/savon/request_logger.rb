@@ -7,12 +7,15 @@ module Savon
       @globals = globals
     end
 
-    def log(request, &http_request)
-      log_request(request) if log?
-      response = http_request.call
-      log_response(response) if log?
+    def log_request(request)
+      logger.info  { "SOAP request: #{request.url}" }
+      logger.info  { headers_to_log(request.headers) }
+      logger.debug { body_to_log(request.body) }
+    end
 
-      response
+    def log_response(response, request, elapsed)
+      logger.info  { "SOAP response (status #{response.code})" }
+      logger.debug { body_to_log(response.body) }
     end
 
     def logger
@@ -24,17 +27,6 @@ module Savon
     end
 
     private
-
-    def log_request(request)
-      logger.info  { "SOAP request: #{request.url}" }
-      logger.info  { headers_to_log(request.headers) }
-      logger.debug { body_to_log(request.body) }
-    end
-
-    def log_response(response)
-      logger.info  { "SOAP response (status #{response.code})" }
-      logger.debug { body_to_log(response.body) }
-    end
 
     def headers_to_log(headers)
       headers.map { |key, value| "#{key}: #{value}" }.join(", ")
