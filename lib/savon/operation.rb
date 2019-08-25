@@ -38,7 +38,7 @@ module Savon
       @name = name
       @wsdl = wsdl
       @globals = globals
-      @request_loggers = [@globals[:request_logger], RequestLogger.new(globals)]
+      @request_loggers = [@globals[:request_logger], RequestLogger.new(globals)].compact
     end
 
     def build(locals = {}, &block)
