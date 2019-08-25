@@ -93,7 +93,7 @@ module Savon
     def call_with_logging(request)
       @request_loggers.each { |request_logger| request_logger.log_request(request) }
       response = nil
-      elapsed = ::Benchmartk.realtime do
+      elapsed = ::Benchmark.realtime do
         response = HTTPI.post(request, @globals[:adapter])
       end
       @request_loggers.each { |request_logger| request_logger.log_response(response, request, elapsed) }
