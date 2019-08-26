@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "logger"
 require "httpi"
 
@@ -76,6 +77,7 @@ module Savon
         :encoding                    => "UTF-8",
         :soap_version                => 1,
         :namespaces                  => {},
+        :request_logger              => nil,
         :logger                      => Logger.new($stdout),
         :log                         => false,
         :filters                     => [],
